@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
+const patientRoutes = require('./routes/patient');
 // const Doctor = require('./models/Doctor');
 // const Patient = require('./models/Patient');
 // const doctorRputes = require('./routes/doctor');
@@ -27,5 +28,7 @@ app.use((req, res, next) => {
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+app.use('/api/patient', patientRoutes);
 
 module.exports= app;
