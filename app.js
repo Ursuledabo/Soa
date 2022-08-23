@@ -20,13 +20,12 @@ app.use((req, res, next) => {
 //   app.use((req, res, next) => {
 //     res.end('Réponse envoyée avec succès !');
 //   });
-
+ 
   //connexion mongoose
   mongoose.connect('mongodb+srv://fy:fy24@cluster0.yphpz.mongodb.net/TDbd?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
 
 module.exports= app;
