@@ -23,13 +23,15 @@ exports.singup = (req, res, next) => {
     )
     .catch(error => res.status(500).json({error}));
 }
+
+
 exports.login = (req,res,next) => {
-    Patient.findOne({email:req.body.email})
+    Patient.findOne({patientMail:req.body.patientMail})
     .then(patient => {
         if (!patient){
             return res.status(401).json({message: "User not found"})
         }
-        bcrypt.compare(req.body.password,user.password)
+        bcrypt.compare(req.body.patientPassword,user.patientPassword)
         .then(valid => {
             if (!valid){
                 return res.status(401).json({error:"Incorret password" })
@@ -38,7 +40,7 @@ exports.login = (req,res,next) => {
                 userId: user._id,
                 token : jwt.sign(
                     {userId: user._id},
-                    'RANDOM_TOKEN_SECRET',
+                    'ISPM_TRES_SUCRE_2022',
                     {expiresIn: '24h'}
                 )
             });
