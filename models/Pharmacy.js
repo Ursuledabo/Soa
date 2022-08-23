@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-const pharmacy = mongoose.Schema({
+const pharmacySchema = mongoose.Schema({
     Name: {type: String,required:true},
     Address: {type:String,required:true},
     Email: {type:String,required:true,unique:true},

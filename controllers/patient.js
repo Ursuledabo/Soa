@@ -1,7 +1,6 @@
 const Patient = require("../models/Patient");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { useSSRContext } = require("vue");
 
 exports.singup = (req, res, next) => {
     bcrypt.hash(req.body.patientPassword, 10)
