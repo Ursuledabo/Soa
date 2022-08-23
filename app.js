@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
 const patientRoutes = require('./routes/patient');
+//const doctorRoutes = require("./routes/doctor");
 // const Doctor = require('./models/Doctor');
 // const Patient = require('./models/Patient');
 // const doctorRputes = require('./routes/doctor');
@@ -30,5 +31,6 @@ app.use((req, res, next) => {
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 app.use('/api/patient', patientRoutes);
+//app.use('/api/doctor', doctorRoutes);
 
 module.exports= app;

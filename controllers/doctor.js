@@ -1,5 +1,6 @@
 const Doctor = require("../models/Doctor");
 const bcrypt = require("bcrypt");
+
 exports.signup = (req, res, next) =>{
     bcrypt.hash(req.body.doctorPasword, 10)
     .then(
