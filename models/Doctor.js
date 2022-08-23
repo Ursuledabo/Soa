@@ -5,6 +5,7 @@ const doctorSchema = mongoose.Schema({
     doctorFirstName: {type:String,required:true},
     doctorMail : {type:String,required:true},
     doctorAddress : {type:String,required:true},
+    doctorPasword: {type:String,required:true},
     doctorContact : {type:String,required:true},
     doctorGender: {type:String,required:true},
     doctorType : {type:Boolean,required:true},
@@ -13,4 +14,4 @@ const doctorSchema = mongoose.Schema({
     doctorReference: {type:String,required:true}, 
 });
 
-module.exports = mongoose.model('Post',doctorSchema);
+module.exports = mongoose.model('Doctor',doctorSchema);
