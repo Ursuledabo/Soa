@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require("mongoose");
+const patientRoutes = require('./routes/patient');
 // const Doctor = require('./models/Doctor');
 // const Patient = require('./models/Patient');
 // const doctorRputes = require('./routes/doctor');
@@ -20,13 +21,14 @@ app.use((req, res, next) => {
 //   app.use((req, res, next) => {
 //     res.end('Réponse envoyée avec succès !');
 //   });
-
+ 
   //connexion mongoose
-  mongoose.connect('mongodb+srv://fy:fy24@cluster0.yphpz.mongodb.net/TDbd?retryWrites=true&w=majority',
+  mongoose.connect('mongodb+srv://Ursule:susule@cluster0.19evv.mongodb.net/?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+app.use('/api/patient', patientRoutes);
 
 module.exports= app;
