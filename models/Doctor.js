@@ -10,7 +10,7 @@ const doctorSchema = mongoose.Schema({
     doctorGender: {type:String,required:true},
     doctorType : {type:Boolean,required:true},
     doctorSpeciality: {type:String,required:false},
-    doctorOther : {type:String,required:true},
+    doctorOther : {type:String,required:false},
     doctorReference: {type:String,required:true}, 
 });
 

@@ -21,8 +21,12 @@ app.use((req, res, next) => {
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+/*
+app.use("/",(req, res, next) =>{
+  res.status(201).json({message:"Hello doctor !" })
+})*/
+
 app.use('/api/patient', patientRoutes);
-//app.use('/api/doctor', doctorRoutes);
 app.use('api/pharmacy', pharmacyRoute);
 app.use('/api/doctor', doctorRoutes);
 
