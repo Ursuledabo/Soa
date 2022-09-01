@@ -31,4 +31,4 @@ app.use('api/pharmacy', pharmacyRoute);
 app.use('/api/doctor', doctorRoutes);
 
 
-module.exports= app;
+module.exports = app;

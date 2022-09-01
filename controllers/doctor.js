@@ -10,7 +10,7 @@ exports.signup = (req, res, next) =>{
                 doctorFirstName:req.body.doctorFirstName,
                 doctorMail :req.body.doctorMail,
                 doctorAddress :req.body.doctorAddress,
-                doctorPasword:doctorHashedPassword,
+                doctorPassword:doctorHashedPassword,
                 doctorContact :req.body.doctorContact,
                 doctorGender:req.body.doctorGender,
                 doctorType :req.body.doctorType,
@@ -32,7 +32,7 @@ exports.login = (req,res,next) => {
         if (!doctor){
             return res.status(401).json({message: "Doctor not found"})
         }
-        bcrypt.compare(req.body.doctorHashedPassword,doctorHashedPassword)
+        bcrypt.compareSync(req.body.doctorPassword,doctor.doctorPassword)
         .then(valid => {
             if (!valid){
                 return res.status(401).json({error:"Incorret password" })
