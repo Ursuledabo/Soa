@@ -5,15 +5,11 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
       const pharmacy = new Pharmacy({
-        Name : req.body.patientName,
-        Email: req.body.patientMail,
-        Password: patientHashedPassword,
-        Adress: req.body.patientAdress,
-        Contact: req.body.patientContact,
-        
+        email: req.body.email,
+        password: hash
       });
       pharmacy.save()
-        .then(() => res.status(201).json({ message: 'created successfully !' }))
+        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
         .catch(error => res.status(400).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));

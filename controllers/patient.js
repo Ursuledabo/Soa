@@ -2,6 +2,7 @@ const Patient = require("../models/Patient");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+
 exports.singup = (req, res, next) => {
     bcrypt.hash(req.body.patientPassword, 10)
     .then(
@@ -16,7 +17,7 @@ exports.singup = (req, res, next) => {
                 patientBloodType: req.body.patientBloodType  
             });
             patient.save()
-                .then(()=> res.status(201).json({message: "Patient created successfully"}))
+                .then(()=> res.status(201).json({message: "Patient created successfully"})) 
                 .catch(error => res.status(400).json({error}));
         }
     )
@@ -30,16 +31,16 @@ exports.login = (req,res,next) => {
         if (!patient){
             return res.status(401).json({message: "User not found"})
         }
-        bcrypt.compare(req.body.patientPassword,user.patientPassword)
+        bcrypt.compare(req.body.patientPassword,patient.patientPassword)
         .then(valid => {
             if (!valid){
                 return res.status(401).json({error:"Incorret password" })
             }
             res.status(200).json({
-                userId: user._id,
+                patientId: patient._id,
                 token : jwt.sign(
                     {userId: user._id},
-                    'ISPM_TRES_SUCRE_2022',
+                    'RANDOM_TOKEN_SECRET',
                     {expiresIn: '24h'}
                 )
             });
