@@ -35,11 +35,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginPatient = exports.signupPatient = void 0;
+exports.sendVerificationMail = exports.loginPatient = exports.signupPatient = void 0;
 const Patient_1 = __importDefault(require("../model/Patient"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_errors_1 = __importStar(require("http-errors"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const nodemailer_1 = __importDefault(require("nodemailer"));
 const signupPatient = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { patientName, patientMail, patientPassword, patientIsMale, patientAdress, patientContact, patientBloodType } = req.body;
     try {
@@ -88,3 +89,21 @@ const loginPatient = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.loginPatient = loginPatient;
+const sendVerificationMail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { patientMail } = req.body;
+    try {
+        const patient = yield Patient_1.default.findOne({ patientMail });
+        if (!patient)
+            return next((0, http_errors_1.default)(404, "patient not found"));
+        if (patient.patientIsVerified)
+            return next((0, http_errors_1.default)(406, "patient already verified"));
+        const encryptedtoken = yield bcrypt_1.default.hash(patient._id.toString(), 8);
+        const jwtToken = jsonwebtoken_1.default.sign({ patientid: patient._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        let testAccount = yield nodemailer_1.default.createTestAccount();
+        yield patient.updateOne({ $set: { verifyToken: encryptedtoken } });
+    }
+    catch (error) {
+        return next(http_errors_1.InternalServerError);
+    }
+});
+exports.sendVerificationMail = sendVerificationMail;

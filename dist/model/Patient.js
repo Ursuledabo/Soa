@@ -9,5 +9,7 @@ const PatientSchema = new mongoose_1.Schema({
     patientAdress: { type: String, required: true },
     patientContact: { type: String, required: true },
     patientBloodType: { type: String, required: false },
+    patientIsVerified: { type: Boolean, default: false },
+    verifyToken: { type: String },
 });
 exports.default = (0, mongoose_1.model)("Patient", PatientSchema);

@@ -7,13 +7,21 @@ import morgan from "morgan";
 import patientRoutes from "./routes/patientRoutes";
 import passport from "passport";
 import kPassport from "./middleware/passport";
+import cookieParser from "cookie-parser";
+import exampleRoutes from "./routes/exampleRoutes";
 
 const app = express();
 app.use(express.json());
+
+app.use(cookieParser());
+
 app.use(passport.initialize());
 kPassport(passport);
+
 app.use(morgan("dev"));
+ 
 app.use('/patient', patientRoutes);
+app.use('/example', exampleRoutes)
 
 app.get("/", (req,res)=>{
     res.json({

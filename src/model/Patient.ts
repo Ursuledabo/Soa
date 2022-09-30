@@ -9,6 +9,8 @@ export interface IPatient extends Document {
         patientAdress: string;
         patientContact: string;
         patientBloodType: string;
+        patientIsVerified: boolean;
+        verifyToken: string;
 }
 
 const PatientSchema: Schema = new Schema({
@@ -19,7 +21,8 @@ const PatientSchema: Schema = new Schema({
         patientAdress: {type: String, required: true},
         patientContact: {type: String, required: true},
         patientBloodType: {type: String, required: false},
-    
+        patientIsVerified: {type: Boolean, default: false},
+        verifyToken: {type: String},
 })
 
 export default model<IPatient>("Patient", PatientSchema)

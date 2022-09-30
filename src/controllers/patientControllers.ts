@@ -3,6 +3,7 @@ import Patient from "../model/Patient";
 import bcrypt from "bcrypt"
 import createHttpError, {InternalServerError} from "http-errors";
 import jwt from "jsonwebtoken";
+import nodemailer from "nodemailer";
 
 export const signupPatient:RequestHandler = async (req, res, next) => {
     const {patientName,
@@ -57,4 +58,29 @@ export const loginPatient:RequestHandler = async (req, res, next) => {
     } catch (error) {
         return next(InternalServerError);
     }
+}
+
+export const sendVerificationMail:RequestHandler = async (req, res, next) => {
+    const {patientMail}: {patientMail:string} = req.body;
+
+try {
+    const patient = await Patient.findOne({patientMail});
+    if(!patient) return next(createHttpError(404, "patient not found"));
+
+    if(patient.patientIsVerified) return next(createHttpError(406, "patient already verified"));
+
+    const encryptedtoken = await bcrypt.hash(patient._id.toString(), 8);
+
+    const jwtToken = jwt.sign({patientid: patient._id},
+        process.env.JWT_SECRET as string,
+        {expiresIn: "1h"}); 
+
+        let testAccount = await nodemailer.createTestAccount();
+
+    await patient.updateOne({$set: {verifyToken : encryptedtoken} });
+
+    
+} catch (error) {
+    return next(InternalServerError);
+}
 }

@@ -12,12 +12,16 @@ const morgan_1 = __importDefault(require("morgan"));
 const patientRoutes_1 = __importDefault(require("./routes/patientRoutes"));
 const passport_1 = __importDefault(require("passport"));
 const passport_2 = __importDefault(require("./middleware/passport"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const exampleRoutes_1 = __importDefault(require("./routes/exampleRoutes"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cookie_parser_1.default)());
 app.use(passport_1.default.initialize());
 (0, passport_2.default)(passport_1.default);
 app.use((0, morgan_1.default)("dev"));
 app.use('/patient', patientRoutes_1.default);
+app.use('/example', exampleRoutes_1.default);
 app.get("/", (req, res) => {
     res.json({
         message: "hello World"
