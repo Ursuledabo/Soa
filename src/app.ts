@@ -6,11 +6,12 @@ import { errorHandler } from "./middleware/errorHandler";
 import morgan from "morgan";
 import patientRoutes from "./routes/patientRoutes";
 import passport from "passport";
+import kPassport from "./middleware/passport";
 
 const app = express();
 app.use(express.json());
 app.use(passport.initialize());
-kPassword(passport);
+kPassport(passport);
 app.use(morgan("dev"));
 app.use('/patient', patientRoutes);
 
