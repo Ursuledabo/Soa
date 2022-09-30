@@ -10,8 +10,11 @@ const config_1 = require("./config");
 const errorHandler_1 = require("./middleware/errorHandler");
 const morgan_1 = __importDefault(require("morgan"));
 const patientRoutes_1 = __importDefault(require("./routes/patientRoutes"));
+const passport_1 = __importDefault(require("passport"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use(passport_1.default.initialize());
+kPassword(passport_1.default);
 app.use((0, morgan_1.default)("dev"));
 app.use('/patient', patientRoutes_1.default);
 app.get("/", (req, res) => {

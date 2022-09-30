@@ -39,6 +39,7 @@ exports.loginPatient = exports.signupPatient = void 0;
 const Patient_1 = __importDefault(require("../model/Patient"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_errors_1 = __importStar(require("http-errors"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signupPatient = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { patientName, patientMail, patientPassword, patientIsMale, patientAdress, patientContact, patientBloodType } = req.body;
     try {
@@ -72,7 +73,15 @@ const loginPatient = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         const isPasswordValid = yield bcrypt_1.default.compare(patientPassword, patient.patientPassword);
         if (!isPasswordValid)
             return next((0, http_errors_1.default)(401, "invalid password"));
-        res.json({ message: "login successful" });
+        const token = jsonwebtoken_1.default.sign({
+            Patientname: patient.patientName,
+            Patientemail: patient.patientMail,
+            Patientid: patient._id
+        }, process.env.JWT_SECRET, {
+            expiresIn: "12h"
+        });
+        res.cookie("jwt", token);
+        res.json({ message: "login successful as", token });
     }
     catch (error) {
         return next(http_errors_1.InternalServerError);

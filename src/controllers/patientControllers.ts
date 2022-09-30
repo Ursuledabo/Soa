@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import Patient from "../model/Patient";
 import bcrypt from "bcrypt"
 import createHttpError, {InternalServerError} from "http-errors";
+import jwt from "jsonwebtoken";
 
 export const signupPatient:RequestHandler = async (req, res, next) => {
     const {patientName,
@@ -40,7 +41,19 @@ export const loginPatient:RequestHandler = async (req, res, next) => {
         if(!patient) return next(createHttpError(404, "patient not found"));
         const isPasswordValid = await bcrypt.compare(patientPassword, patient.patientPassword);
         if(!isPasswordValid) return next(createHttpError(401, "invalid password"));
-        res.json({message:"login successful"});
+        const token = jwt.sign({
+            Patientname: patient.patientName,
+            Patientemail: patient.patientMail,
+            Patientid: patient._id}, 
+            process.env.JWT_SECRET as string, 
+            {
+                expiresIn: "12h"
+            }
+        );
+
+        res.cookie("jwt", token);
+
+        res.json({message:"login successful as", token});
     } catch (error) {
         return next(InternalServerError);
     }
