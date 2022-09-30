@@ -1,15 +1,15 @@
 import express, { ErrorRequestHandler } from "express";
 import createHttpError from "http-errors"
-import exampleRoute from './routes/exampleRoutes'
 import mongoose from 'mongoose'
 import { DB, PORT } from "./config";
 import { errorHandler } from "./middleware/errorHandler";
 import morgan from "morgan";
+import patientRoutes from "./routes/patientRoutes";
 
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
-app.use('/', exampleRoute);
+app.use('/patient', patientRoutes);
 
 app.get("/", (req,res)=>{
     res.json({
