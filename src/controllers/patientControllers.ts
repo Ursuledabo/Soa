@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import createHttpError, {InternalServerError} from "http-errors";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import { FRONTEND_URL } from "../config";
 
 export const signupPatient:RequestHandler = async (req, res, next) => {
     const {patientName,
@@ -75,11 +76,26 @@ try {
         process.env.JWT_SECRET as string,
         {expiresIn: "1h"}); 
 
-        let testAccount = await nodemailer.createTestAccount();
+      // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Fred Foo 👻" <sesedra@gmail.com>', // sender address
+    to: `${patientMail}`, // list of receivers
+    subject: "Email test nodemailer", // Subject line
+    // text: "Hello world?", // plain text body
+    html: `Your verification link <a href="${FRONTEND_URL}/forgot-password-verify/${jwtToken}">Link</a>`, // html body
+  });
+
+  // Preview only available when sending through an Ethereal account
+  //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+
 
     await patient.updateOne({$set: {verifyToken : encryptedtoken} });
 
-    
+    res.json({message : `Preview URL: %s, ${nodemailer.getTestMessageUrl(info)}`,
+}); 
+
 } catch (error) {
     return next(InternalServerError);
 }

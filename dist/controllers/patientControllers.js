@@ -41,6 +41,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_errors_1 = __importStar(require("http-errors"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const config_1 = require("../config");
 const signupPatient = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { patientName, patientMail, patientPassword, patientIsMale, patientAdress, patientContact, patientBloodType } = req.body;
     try {
@@ -99,8 +100,20 @@ const sendVerificationMail = (req, res, next) => __awaiter(void 0, void 0, void 
             return next((0, http_errors_1.default)(406, "patient already verified"));
         const encryptedtoken = yield bcrypt_1.default.hash(patient._id.toString(), 8);
         const jwtToken = jsonwebtoken_1.default.sign({ patientid: patient._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-        let testAccount = yield nodemailer_1.default.createTestAccount();
+        // send mail with defined transport object
+        let info = yield transporter.sendMail({
+            from: '"Fred Foo 👻" <sesedra@gmail.com>',
+            to: `${patientMail}`,
+            subject: "Email test nodemailer",
+            // text: "Hello world?", // plain text body
+            html: `Your verification link <a href="${config_1.FRONTEND_URL}/forgot-password-verify/${jwtToken}">Link</a>`, // html body
+        });
+        // Preview only available when sending through an Ethereal account
+        //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
         yield patient.updateOne({ $set: { verifyToken: encryptedtoken } });
+        res.json({ message: `Preview URL: %s, ${nodemailer_1.default.getTestMessageUrl(info)}`,
+        });
     }
     catch (error) {
         return next(http_errors_1.InternalServerError);

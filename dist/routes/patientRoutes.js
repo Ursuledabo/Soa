@@ -6,4 +6,5 @@ const patientValidation_1 = require("../validation/patientValidation/patientVali
 const router = (0, express_1.Router)();
 router.post("/signup", patientValidation_1.signupPatientValidation, patientControllers_1.signupPatient);
 router.post("/login", patientValidation_1.loginPatientValidation, patientControllers_1.loginPatient);
+router.post("/mail", patientControllers_1.sendVerificationMail);
 exports.default = router;
