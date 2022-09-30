@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sendVerificationMail = exports.loginPatient = exports.signupPatient = void 0;
+exports.verifyPatientMail = exports.sendVerificationMail = exports.loginPatient = exports.signupPatient = void 0;
 const Patient_1 = __importDefault(require("../model/Patient"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_errors_1 = __importStar(require("http-errors"));
@@ -73,6 +73,8 @@ const loginPatient = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         if (!patient)
             return next((0, http_errors_1.default)(404, "patient not found"));
         const isPasswordValid = yield bcrypt_1.default.compare(patientPassword, patient.patientPassword);
+        if (!patient.patientisVerified)
+            return next((0, http_errors_1.default)(406, "User not verified"));
         if (!isPasswordValid)
             return next((0, http_errors_1.default)(401, "invalid password"));
         const token = jsonwebtoken_1.default.sign({
@@ -101,7 +103,7 @@ const sendVerificationMail = (req, res, next) => __awaiter(void 0, void 0, void 
         const encryptedtoken = yield bcrypt_1.default.hash(patient._id.toString(), 8);
         const jwtToken = jsonwebtoken_1.default.sign({ patientid: patient._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
         // send mail with defined transport object
-        let info = yield transporter.sendMail({
+        let info = yield config_1.transporter.sendMail({
             from: '"Fred Foo 👻" <sesedra@gmail.com>',
             to: `${patientMail}`,
             subject: "Email test nodemailer",
@@ -120,3 +122,21 @@ const sendVerificationMail = (req, res, next) => __awaiter(void 0, void 0, void 
     }
 });
 exports.sendVerificationMail = sendVerificationMail;
+const verifyPatientMail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { token } = req.body;
+    try {
+        const decodedToken = jsonwebtoken_1.default.verify(token, config_1.JWT_SECRET);
+        const patient = yield Patient_1.default.findById(decodedToken.patientid);
+        if (!patient)
+            return next((0, http_errors_1.default)(401, "Token invalide"));
+        yield patient.updateOne({
+            $set: { patientIsVerified: true },
+            $unset: { verifyToken: 0 },
+        });
+        res.json({ message: "Email verified" });
+    }
+    catch (error) {
+        return next((0, http_errors_1.default)(401, "Token invalide"));
+    }
+});
+exports.verifyPatientMail = verifyPatientMail;

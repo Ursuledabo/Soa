@@ -4,7 +4,7 @@ import bcrypt from "bcrypt"
 import createHttpError, {InternalServerError} from "http-errors";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
-import { FRONTEND_URL } from "../config";
+import { FRONTEND_URL, JWT_SECRET, transporter } from "../config";
 
 export const signupPatient:RequestHandler = async (req, res, next) => {
     const {patientName,
@@ -42,6 +42,7 @@ export const loginPatient:RequestHandler = async (req, res, next) => {
         const patient = await Patient.findOne({patientMail});
         if(!patient) return next(createHttpError(404, "patient not found"));
         const isPasswordValid = await bcrypt.compare(patientPassword, patient.patientPassword);
+        if(!patient.patientisVerified) return next(createHttpError(406, "User not verified"))
         if(!isPasswordValid) return next(createHttpError(401, "invalid password"));
         const token = jwt.sign({
             Patientname: patient.patientName,
@@ -99,4 +100,25 @@ try {
 } catch (error) {
     return next(InternalServerError);
 }
+}
+
+export const verifyPatientMail:RequestHandler = async (req, res, next) => {
+    const {token}:{token:string} = req.body;
+
+    try {
+        const decodedToken:any = jwt.verify(token, JWT_SECRET);
+
+        const patient = await Patient.findById(decodedToken.patientid);
+        if(!patient) return next(createHttpError(401, "Token invalide"));
+
+        await patient.updateOne({
+            $set: {patientIsVerified: true},
+            $unset: {verifyToken: 0},
+        });
+
+        res.json({message: "Email verified"})
+
+    } catch (error) {
+        return next(createHttpError(401, "Token invalide"))
+    }
 }
