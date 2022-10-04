@@ -15,6 +15,7 @@ const passport_1 = __importDefault(require("passport"));
 const passport_2 = __importDefault(require("./middleware/passport"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const exampleRoutes_1 = __importDefault(require("./routes/exampleRoutes"));
+const pharmacyRoutes_1 = __importDefault(require("./routes/pharmacyRoutes"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
@@ -24,6 +25,7 @@ app.use((0, morgan_1.default)("dev"));
 app.use('/patient', patientRoutes_1.default);
 app.use('/doctor', doctorRoutes_1.default);
 app.use('/example', exampleRoutes_1.default);
+app.use('/pharmacy', pharmacyRoutes_1.default);
 app.get("/", (req, res) => {
     res.json({
         message: "hello World"

@@ -73,7 +73,7 @@ const loginPatient = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         if (!patient)
             return next((0, http_errors_1.default)(404, "patient not found"));
         const isPasswordValid = yield bcrypt_1.default.compare(patientPassword, patient.patientPassword);
-        if (!patient.patientisVerified)
+        if (!patient.patientIsVerified)
             return next((0, http_errors_1.default)(406, "User not verified"));
         if (!isPasswordValid)
             return next((0, http_errors_1.default)(401, "invalid password"));

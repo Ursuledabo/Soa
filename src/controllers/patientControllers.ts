@@ -42,7 +42,7 @@ export const loginPatient:RequestHandler = async (req, res, next) => {
         const patient = await Patient.findOne({patientMail});
         if(!patient) return next(createHttpError(404, "patient not found"));
         const isPasswordValid = await bcrypt.compare(patientPassword, patient.patientPassword);
-        if(!patient.patientisVerified) return next(createHttpError(406, "User not verified"))
+        if(!patient.patientIsVerified) return next(createHttpError(406, "User not verified"))
         if(!isPasswordValid) return next(createHttpError(401, "invalid password"));
         const token = jwt.sign({
             Patientname: patient.patientName,
