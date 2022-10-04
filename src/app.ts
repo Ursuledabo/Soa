@@ -5,6 +5,7 @@ import { DB, PORT } from "./config";
 import { errorHandler } from "./middleware/errorHandler";
 import morgan from "morgan";
 import patientRoutes from "./routes/patientRoutes";
+import doctorRoutes from "./routes/doctorRoutes";
 import passport from "passport";
 import kPassport from "./middleware/passport";
 import cookieParser from "cookie-parser";
@@ -21,6 +22,7 @@ kPassport(passport);
 app.use(morgan("dev"));
  
 app.use('/patient', patientRoutes);
+app.use('/doctor', doctorRoutes);
 app.use('/example', exampleRoutes)
 
 app.get("/", (req,res)=>{

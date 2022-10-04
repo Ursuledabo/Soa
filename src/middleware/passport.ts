@@ -31,4 +31,5 @@ export default (passport: PassportStatic) => {
         } catch (error) {
             console.log(error);
         }
-    }));};
+    }));
+};
