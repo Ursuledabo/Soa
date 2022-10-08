@@ -12,6 +12,8 @@ export const signupPharmacy:RequestHandler = async (req,res,next) => {
         pharmacyMail,
         pharmacyPassword,
         pharmacyContact,
+        pharmacyId,
+
     } = req.body;
 
     try{
@@ -24,7 +26,9 @@ export const signupPharmacy:RequestHandler = async (req,res,next) => {
             pharmacyAdress,
             pharmacyMail,
             pharmacyPassword: hashedPassword,
-            pharmacyContact
+            pharmacyContact,
+            pharmacyId
+
         });
         await newPharmacy.save();
         res.json({message: "Pharmacie créé"});

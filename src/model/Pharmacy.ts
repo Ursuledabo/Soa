@@ -5,6 +5,7 @@ export interface IPharmacy extends Document {
     pharmacyMail: string;
     pharmacyPassword: string;
     pharmacyContact: string;
+    pharmacyId: string;
 }
 
 const PharmacySchema: Schema = new Schema ({
@@ -13,6 +14,7 @@ const PharmacySchema: Schema = new Schema ({
     pharmacyMail: {type: String, required:true},
     pharmacyPassword: {type: String, required:true},
     pharmacyContact: {type: String, required:true},
+    pharmacyId: {type: String}
 })
 
 export default model<IPharmacy>("Pharmacy", PharmacySchema)

@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { loginDoctor, signupDoctor } from "../controllers/doctorControllers";
-import { loginPatient, sendVerificationMail, signupPatient, verifyPatientMail } from "../controllers/patientControllers";
 import { loginDoctorValidation, signupDoctorValidation} from "../validation/doctorValidation/doctorValidation";
 
 const router = Router();

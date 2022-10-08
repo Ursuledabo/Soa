@@ -19,7 +19,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_errors_2 = __importDefault(require("http-errors"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signupPharmacy = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pharmacyName, pharmacyAdress, pharmacyMail, pharmacyPassword, pharmacyContact, } = req.body;
+    const { pharmacyName, pharmacyAdress, pharmacyMail, pharmacyPassword, pharmacyContact, pharmacyId, } = req.body;
     try {
         const existingPharmacy = yield Pharmacy_1.default.findOne({ pharmacyMail });
         if (existingPharmacy)
@@ -30,7 +30,8 @@ const signupPharmacy = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             pharmacyAdress,
             pharmacyMail,
             pharmacyPassword: hashedPassword,
-            pharmacyContact
+            pharmacyContact,
+            pharmacyId
         });
         yield newPharmacy.save();
         res.json({ message: "Pharmacie créé" });

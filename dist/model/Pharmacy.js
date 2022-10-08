@@ -7,5 +7,6 @@ const PharmacySchema = new mongoose_1.Schema({
     pharmacyMail: { type: String, required: true },
     pharmacyPassword: { type: String, required: true },
     pharmacyContact: { type: String, required: true },
+    pharmacyId: { type: String }
 });
 exports.default = (0, mongoose_1.model)("Pharmacy", PharmacySchema);

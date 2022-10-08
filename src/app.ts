@@ -11,6 +11,8 @@ import kPassport from "./middleware/passport";
 import cookieParser from "cookie-parser";
 import exampleRoutes from "./routes/exampleRoutes";
 import pharmacyRoutes from "./routes/pharmacyRoutes";
+import { rechercheUser } from "./controllers/loginController";
+import medocRoutes from "./routes/medocRoutes";
 
 const app = express();
 app.use(express.json());
@@ -25,7 +27,9 @@ app.use(morgan("dev"));
 app.use('/patient', patientRoutes);
 app.use('/doctor', doctorRoutes);
 app.use('/example', exampleRoutes);
-app.use('/pharmacy', pharmacyRoutes)
+app.use('/pharmacy', pharmacyRoutes);
+app.post('/test', rechercheUser);
+app.use('/medoc', medocRoutes);
 
 app.get("/", (req,res)=>{
     res.json({

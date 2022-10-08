@@ -11,7 +11,8 @@ exports.PharmacySchema = {
         pharmacyAdress: joi_1.default.string().required(),
         pharmacyMail: joi_1.default.string().email().required(),
         pharmacyPassword: joi_1.default.string().required(),
-        pharmacyContact: joi_1.default.string().required()
+        pharmacyContact: joi_1.default.string().required(),
+        pharmacyId: joi_1.default.string().required()
     }),
     loginPharmacy: joi_1.default.object({
         pharmacyMail: joi_1.default.string().email().required(),

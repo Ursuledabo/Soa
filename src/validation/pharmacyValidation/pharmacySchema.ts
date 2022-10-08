@@ -6,7 +6,8 @@ export const PharmacySchema = {
         pharmacyAdress: Joi.string().required(),
         pharmacyMail: Joi.string().email().required(),
         pharmacyPassword: Joi.string().required(),
-        pharmacyContact: Joi.string().required()
+        pharmacyContact: Joi.string().required(),
+        pharmacyId: Joi.string().required()
     }),
     loginPharmacy:Joi.object({
         pharmacyMail: Joi.string().email().required(),
