@@ -35,9 +35,6 @@ app.use(() => {
     throw (0, http_errors_1.default)(404, "Route introuvable");
 });
 app.use(errorHandler_1.errorHandler);
-// app.listen(9000,()=>{
-//     console.log("Server Started")
-// })
 mongoose_1.default
     .connect(config_1.DB)
     .then(() => {

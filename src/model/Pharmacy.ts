@@ -1,25 +1,18 @@
-import { string } from "joi"
-import {Schema, model, Document} from "mongoose"
-
+import { model, Schema } from "mongoose";
 export interface IPharmacy extends Document {
-        pharmacyName: string ;
-        pharmacyAdress: string;
-        pharmacyMail: string ;
-        pharmacyPassword: string ;
-        pharmacyContact: string;
-        pharmacyIsVerified: boolean;
-        verifyToken: string;
+    pharmacyName: string;
+    pharmacyAdress: string;
+    pharmacyMail: string;
+    pharmacyPassword: string;
+    pharmacyContact: string;
 }
 
-const PharmacySchema: Schema = new Schema({
-        pharmacyName: {type: String,required:true},
-        pharmacyAddress: {type:String,required:true},
-        pharmacyEmail: {type:String,required:true,unique:true},
-        pharmacyPassword: {type:String,required:true, unique:true},
-        pharmacyContact :{type:String,required:true},
-        pharmacyIsVerified :{type:Boolean},
-        verifyToken :{type:String,required:true}
-
+const PharmacySchema: Schema = new Schema ({
+    pharmacyName: {type: String, required:true},
+    pharmacyAdress: {type: String, required:true},
+    pharmacyMail: {type: String, required:true},
+    pharmacyPassword: {type: String, required:true},
+    pharmacyContact: {type: String, required:true},
 })
 
 export default model<IPharmacy>("Pharmacy", PharmacySchema)

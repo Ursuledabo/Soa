@@ -36,25 +36,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginPharmacy = exports.signupPharmacy = void 0;
-const Pharmacy_1 = __importDefault(require("../model/Pharmacy"));
+const Pharmsacy_1 = __importDefault(require("../model/Pharmsacy"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const http_errors_1 = __importStar(require("http-errors"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const signupPharmacy = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { pharmacyName, pharmacyAdress, pharmacyMail, pharmacyPassword, pharmacyContact } = req.body;
     try {
-        const existingpharmacy = yield Pharmacy_1.default.findOne({ pharmacyMail });
+        const existingpharmacy = yield Pharmsacy_1.default.findOne({ pharmacyMail });
         if (existingpharmacy)
             return next((0, http_errors_1.default)(422, "email already exists"));
         const hashedPassword = yield bcrypt_1.default.hash(pharmacyPassword, 8);
-        const newpharmacy = new Pharmacy_1.default({
+        const newPharmacy = new Pharmsacy_1.default({
             pharmacyName,
             pharmacyMail,
             pharmacyPassword: hashedPassword,
             pharmacyAdress,
             pharmacyContact
         });
-        yield newpharmacy.save();
+        yield newPharmacy.save();
         res.json({ message: "pharmacy created" });
     }
     catch (error) {
@@ -65,7 +65,7 @@ exports.signupPharmacy = signupPharmacy;
 const loginPharmacy = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { pharmacyMail, pharmacyPassword } = req.body;
     try {
-        const pharmacy = yield Pharmacy_1.default.findOne({ pharmacyMail });
+        const pharmacy = yield Pharmsacy_1.default.findOne({ pharmacyMail });
         if (!pharmacy)
             return next((0, http_errors_1.default)(404, "pharmacy not found"));
         const isPasswordValid = yield bcrypt_1.default.compare(pharmacyPassword, pharmacy.pharmacyPassword);

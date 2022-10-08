@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 app.use('/patient', patientRoutes);
 app.use('/doctor', doctorRoutes);
 app.use('/example', exampleRoutes);
-app.use('/pharmacy', pharmacyRoutes);
+app.use('/pharmacy', pharmacyRoutes)
 
 app.get("/", (req,res)=>{
     res.json({
@@ -38,10 +38,6 @@ app.use(()=> {
 });
 
 app.use(errorHandler);
-
-// app.listen(9000,()=>{
-//     console.log("Server Started")
-// })
 
 mongoose
     .connect(DB)
